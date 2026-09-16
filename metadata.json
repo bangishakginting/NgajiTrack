@@ -1,0 +1,6 @@
+{
+  "name": "NGajiTrack",
+  "description": "Aplikasi Monitoring Setoran Al-Qur'an - Catat, Monitor, dan Tingkatkan Tilawah Al-Qur'an",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
