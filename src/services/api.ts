@@ -11,7 +11,7 @@ const STORAGE_KEY_GAS_URL = 'ngajitrack_gas_api_url';
 
 // URL Web App Google Apps Script permanen yang tertanam di kode aplikasi
 // Pengguna di Vercel / GitHub tidak perlu lagi memasukkan URL Google Apps Script secara manual.
-export const PERMANENT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzOKvLNbSilCLi2amqVp-GBwfPpgis_rkfcFkjHh_CzNh5BfTqtttKW2QJmW63Tzk8vKA/exec';
+export const PERMANENT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxbdB05AJ5A4joJ3CxpNvl4dOVXhpLGLdeMUlmin4UW4Iy6rw0DcZZB9vBxrK4l8QlP/exec';
 
 export function getCustomGasUrl(): string {
   if (typeof window !== 'undefined') {
@@ -24,12 +24,13 @@ export function getCustomGasUrl(): string {
 }
 
 export function getEffectiveApiUrl(): string {
-  const custom = getCustomGasUrl();
-  if (custom) return custom;
+  // Prioritas Utama: VITE_API_URL dari Menu Settings / Secrets AI Studio atau file .env
   const envUrl = (import.meta.env.VITE_API_URL || '').trim();
   if (envUrl && !envUrl.includes('YOUR_SCRIPT_ID') && envUrl.startsWith('https://script.google.com')) {
     return envUrl;
   }
+  const custom = getCustomGasUrl();
+  if (custom) return custom;
   return PERMANENT_GAS_URL;
 }
 
@@ -128,14 +129,14 @@ const getPastDateStr = (daysAgo: number) => {
 
 let simUsers: any[] = [
   { user_id: 'USR001', username: 'admin', password: 'Admin123!', nama: 'Administrator', email: 'admin@ngajitrack.id', role: 'admin', reference_id: '', status: 'aktif' },
-  { user_id: 'USR002', username: 'naqib01', password: 'naqib123', nama: 'Ahmad Fauzi', email: 'ahmad@ngajitrack.id', role: 'naqib', reference_id: 'NQB001', status: 'aktif' },
-  { user_id: 'USR003', username: 'naqib02', password: 'naqib123', nama: 'Ustadz Hasan', email: 'hasan@ngajitrack.id', role: 'naqib', reference_id: 'NQB002', status: 'aktif' },
-  { user_id: 'USR004', username: 'anggota01', password: 'anggota123', nama: 'Muhammad Ali', email: 'ali@email.com', role: 'anggota', reference_id: 'AGT001', status: 'aktif' },
-  { user_id: 'USR005', username: 'anggota02', password: 'anggota123', nama: 'Zaid bin Tsabit', email: 'zaid@email.com', role: 'anggota', reference_id: 'AGT002', status: 'aktif' },
-  { user_id: 'USR006', username: 'anggota03', password: 'anggota123', nama: 'Budi Santoso', email: 'budi@email.com', role: 'anggota', reference_id: 'AGT003', status: 'aktif' },
-  { user_id: 'USR007', username: 'anggota04', password: 'anggota123', nama: 'Bilal Al-Habasyi', email: 'bilal@email.com', role: 'anggota', reference_id: 'AGT004', status: 'aktif' },
-  { user_id: 'USR008', username: 'anggota05', password: 'anggota123', nama: 'Abdullah bin Mas\'ud', email: 'abdullah@email.com', role: 'anggota', reference_id: 'AGT005', status: 'aktif' },
-  { user_id: 'USR009', username: 'anggota06', password: 'anggota123', nama: 'Salman Al-Farisi', email: 'salman@email.com', role: 'anggota', reference_id: 'AGT006', status: 'aktif' },
+  { user_id: 'USR002', username: 'naqib01', password: 'Naqib123!', nama: 'Ahmad Fauzi', email: 'ahmad@ngajitrack.id', role: 'naqib', reference_id: 'NQB001', status: 'aktif' },
+  { user_id: 'USR003', username: 'naqib02', password: 'Naqib123!', nama: 'Ustadz Hasan', email: 'hasan@ngajitrack.id', role: 'naqib', reference_id: 'NQB002', status: 'aktif' },
+  { user_id: 'USR004', username: 'anggota01', password: 'Anggota123!', nama: 'Muhammad Ali', email: 'ali@email.com', role: 'anggota', reference_id: 'AGT001', status: 'aktif' },
+  { user_id: 'USR005', username: 'anggota02', password: 'Anggota123!', nama: 'Zaid bin Tsabit', email: 'zaid@email.com', role: 'anggota', reference_id: 'AGT002', status: 'aktif' },
+  { user_id: 'USR006', username: 'anggota03', password: 'Anggota123!', nama: 'Budi Santoso', email: 'budi@email.com', role: 'anggota', reference_id: 'AGT003', status: 'aktif' },
+  { user_id: 'USR007', username: 'anggota04', password: 'Anggota123!', nama: 'Bilal Al-Habasyi', email: 'bilal@email.com', role: 'anggota', reference_id: 'AGT004', status: 'aktif' },
+  { user_id: 'USR008', username: 'anggota05', password: 'Anggota123!', nama: 'Abdullah bin Mas\'ud', email: 'abdullah@email.com', role: 'anggota', reference_id: 'AGT005', status: 'aktif' },
+  { user_id: 'USR009', username: 'anggota06', password: 'Anggota123!', nama: 'Salman Al-Farisi', email: 'salman@email.com', role: 'anggota', reference_id: 'AGT006', status: 'aktif' },
 ];
 
 let simNaqib: Naqib[] = [

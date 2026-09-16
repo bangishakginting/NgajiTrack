@@ -93,17 +93,22 @@ Menyimpan konfigurasi key-value aplikasi.
 
 ## 2. CARA INSTALASI GOOGLE APPS SCRIPT
 
-1. Buka [Google Sheets](https://sheets.google.com) dan buat Spreadsheet baru.
-2. Beri nama spreadsheet Anda, misalnya: `Database NGajiTrack`.
-3. Di toolbar atas, klik **Extensions** (Ekstensi) > **Apps Script**.
+1. Buka [Google Sheets](https://sheets.google.com) dan buat Spreadsheet baru (atau gunakan spreadsheet yang sudah ada).
+2. Salin **ID Spreadsheet** Anda dari baris URL browser:
+   `https://docs.google.com/spreadsheets/d/[ID_SPREADSHEET_DI_SINI]/edit`
+3. Di toolbar atas spreadsheet, klik **Extensions** (Ekstensi) > **Apps Script**.
 4. Hapus seluruh isi file default `Code.gs`.
 5. Salin seluruh isi file `Code.gs` dari folder project ini (`google-apps-script/Code.gs`), lalu tempel ke editor Apps Script.
-6. Klik ikon disket **Save** (Simpan).
-7. Di dropdown fungsi (di sebelah ikon Run), pilih fungsi:
+6. **PENTING (DEVELOPER)**: Pada baris atas `Code.gs`, masukkan ID Spreadsheet Anda ke variabel:
+   ```javascript
+   const SPREADSHEET_ID = "1-WcoLYkF6J0LjaPvfwk85bK7ABhXGvGMxbJoRKZ1Weg"; // <-- Masukkan ID Spreadsheet Anda di sini
+   ```
+7. Klik ikon disket **Save** (Simpan).
+8. Di dropdown fungsi (di sebelah ikon Run), pilih fungsi:
    - Pilih `setupDatabase` lalu klik **Run** (Jalankan).
-   - Atau pilih `seedSampleData` untuk langsung membuat tabel beserta data contoh testing (1 Admin, 2 Naqib, 6 Anggota, dan riwayat aktivitas).
-8. Berikan izin otorisasi (Review Permissions > Pilih Akun Google > Advanced > Go to Untitled Project (unsafe) > Allow).
-9. Periksa spreadsheet Anda, kini 5 sheet telah otomatis terbuat dengan header warna hijau rapi!
+   - Atau pilih `seedSampleData` untuk langsung membuat tabel beserta data contoh testing lengkap (1 Admin, 2 Naqib, 6 Anggota, dan riwayat aktivitas).
+9. Berikan izin otorisasi (Review Permissions > Pilih Akun Google > Advanced > Go to Untitled Project (unsafe) > Allow).
+10. Periksa spreadsheet Anda, kini 5 sheet telah otomatis terbuat dengan header warna hijau rapi!
 
 ---
 
@@ -118,13 +123,20 @@ Menyimpan konfigurasi key-value aplikasi.
 4. Klik **Deploy**.
 5. Salin URL yang dihasilkan, formatnya seperti:
    `https://script.google.com/macros/s/AKfycbx.../exec`
-6. Simpan URL ini untuk dimasukkan ke variabel environment frontend.
+6. Simpan URL ini untuk dimasukkan ke variabel environment frontend (`VITE_API_URL`).
 
 ---
 
-## 4. KONFIGURASI FRONTEND (VERCEL / LOCAL)
+## 4. KONFIGURASI FRONTEND (AI STUDIO / VERCEL / LOCAL)
 
-### 4.1 Di Vercel:
+### 4.1 Di Google AI Studio:
+1. Buka menu **Settings** / **Secrets** di AI Studio.
+2. Tambahkan Secret:
+   - **Key**: `VITE_API_URL`
+   - **Value**: `https://script.google.com/macros/s/AKfycbx.../exec`
+Aplikasi akan langsung terhubung secara otomatis tanpa meminta konfigurasi apapun kepada pengguna!
+
+### 4.2 Di Vercel:
 1. Buka Project NGajiTrack di dashboard Vercel.
 2. Buka tab **Settings** > **Environment Variables**.
 3. Tambahkan:
@@ -132,7 +144,7 @@ Menyimpan konfigurasi key-value aplikasi.
    - **Value**: `https://script.google.com/macros/s/AKfycbx.../exec`
 4. Lakukan **Redeploy**.
 
-### 4.2 Di Komputer Lokal:
+### 4.3 Di Komputer Lokal:
 1. Buat file `.env.local` di root folder project.
 2. Isi dengan:
    ```env
@@ -147,8 +159,9 @@ Menyimpan konfigurasi key-value aplikasi.
 | Role | Username | Password | Keterangan |
 |---|---|---|---|
 | **Admin** | `admin` | `Admin123!` | Akses seluruh dashboard, kelola naqib & anggota |
-| **Naqib 1** | `naqib01` | `naqib123` | Ahmad Fauzi (Binaan: Muhammad Ali, Zaid, Budi) |
-| **Naqib 2** | `naqib02` | `naqib123` | Ustadz Hasan (Binaan: Bilal, Abdullah, Salman) |
-| **Anggota 1**| `anggota01` | `anggota123` | Muhammad Ali (Binaan Ahmad Fauzi) |
-| **Anggota 2**| `anggota02` | `anggota123` | Zaid bin Tsabit |
-| **Anggota 3**| `anggota03` | `anggota123` | Budi Santoso (Perlu Perhatian > 7 hari) |
+| **Naqib 1** | `naqib01` | `Naqib123!` | Ahmad Fauzi (Binaan: Muhammad Ali, Zaid, Budi) |
+| **Naqib 2** | `naqib02` | `Naqib123!` | Ustadz Hasan (Binaan: Bilal, Abdullah, Salman) |
+| **Anggota 1**| `anggota01` | `Anggota123!` | Muhammad Ali (Binaan Ahmad Fauzi) |
+| **Anggota 2**| `anggota02` | `Anggota123!` | Zaid bin Tsabit |
+| **Anggota 3**| `anggota03` | `Anggota123!` | Budi Santoso (Perlu Perhatian > 7 hari) |
+

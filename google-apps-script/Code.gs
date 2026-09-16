@@ -17,7 +17,25 @@
  * 9. Masukkan URL tersebut ke environment variable VITE_API_URL di Vercel atau file .env.local
  */
 
-const SPREADSHEET_ID = SpreadsheetApp.getActiveSpreadsheet() ? SpreadsheetApp.getActiveSpreadsheet().getId() : "";
+// =================================================================================
+// [KONFIGURASI DEVELOPER] ID GOOGLE SPREADSHEET (DATABASE SINGLE SOURCE OF TRUTH)
+// =================================================================================
+// DEVELOPER: Masukkan ID Google Spreadsheet Anda pada variabel SPREADSHEET_ID di bawah ini!
+//
+// Cara mendapatkan ID Spreadsheet:
+// 1. Buka spreadsheet database Anda di browser (Google Sheets).
+// 2. URL spreadsheet memiliki format:
+//    https://docs.google.com/spreadsheets/d/[ID_SPREADSHEET_DI_SINI]/edit
+// 3. Salin deretan karakter ID di antara "/d/" dan "/edit".
+// 4. Masukkan / paste ID tersebut di dalam tanda kutip pada variabel SPREADSHEET_ID di bawah ini:
+//
+// 👇 DEVELOPER: INSERT / GANTI ID SPREADSHEET ANDA DI SINI 👇
+const SPREADSHEET_ID = "1-WcoLYkF6J0LjaPvfwk85bK7ABhXGvGMxbJoRKZ1Weg";
+// 👆 DEVELOPER: INSERT / GANTI ID SPREADSHEET ANDA DI SINI 👆
+//
+// Catatan: Jika variabel di atas dibiarkan string kosong (""), sistem secara otomatis
+// akan menggunakan Spreadsheet aktif tempat script ini terpasang (SpreadsheetApp.getActiveSpreadsheet()).
+// =================================================================================
 
 // Nama Sheet
 const SHEET_USERS = "USERS";
@@ -1329,8 +1347,8 @@ function seedSampleData() {
   naqibSheet.appendRow(["NQB001", "Ahmad Fauzi", "ahmad@ngajitrack.id", "081234567890", "Bandung", 3, "aktif", now, now]);
   naqibSheet.appendRow(["NQB002", "Ustadz Hasan", "hasan@ngajitrack.id", "081298765432", "Jakarta", 3, "aktif", now, now]);
 
-  usersSheet.appendRow(["USR002", "naqib01", hashPassword("naqib123"), "Ahmad Fauzi", "ahmad@ngajitrack.id", "naqib", "NQB001", "aktif", now, now, ""]);
-  usersSheet.appendRow(["USR003", "naqib02", hashPassword("naqib123"), "Ustadz Hasan", "hasan@ngajitrack.id", "naqib", "NQB002", "aktif", now, now, ""]);
+  usersSheet.appendRow(["USR002", "naqib01", hashPassword("Naqib123!"), "Ahmad Fauzi", "ahmad@ngajitrack.id", "naqib", "NQB001", "aktif", now, now, ""]);
+  usersSheet.appendRow(["USR003", "naqib02", hashPassword("Naqib123!"), "Ustadz Hasan", "hasan@ngajitrack.id", "naqib", "NQB002", "aktif", now, now, ""]);
 
   // 6 Anggota
   const anggotaData = [
@@ -1346,12 +1364,12 @@ function seedSampleData() {
     anggotaSheet.appendRow(row);
   });
 
-  usersSheet.appendRow(["USR004", "anggota01", hashPassword("anggota123"), "Muhammad Ali", "ali@email.com", "anggota", "AGT001", "aktif", now, now, ""]);
-  usersSheet.appendRow(["USR005", "anggota02", hashPassword("anggota123"), "Zaid bin Tsabit", "zaid@email.com", "anggota", "AGT002", "aktif", now, now, ""]);
-  usersSheet.appendRow(["USR006", "anggota03", hashPassword("anggota123"), "Budi Santoso", "budi@email.com", "anggota", "AGT003", "aktif", now, now, ""]);
-  usersSheet.appendRow(["USR007", "anggota04", hashPassword("anggota123"), "Bilal Al-Habasyi", "bilal@email.com", "anggota", "AGT004", "aktif", now, now, ""]);
-  usersSheet.appendRow(["USR008", "anggota05", hashPassword("anggota123"), "Abdullah bin Mas'ud", "abdullah@email.com", "anggota", "AGT005", "aktif", now, now, ""]);
-  usersSheet.appendRow(["USR009", "anggota06", hashPassword("anggota123"), "Salman Al-Farisi", "salman@email.com", "anggota", "AGT006", "aktif", now, now, ""]);
+  usersSheet.appendRow(["USR004", "anggota01", hashPassword("Anggota123!"), "Muhammad Ali", "ali@email.com", "anggota", "AGT001", "aktif", now, now, ""]);
+  usersSheet.appendRow(["USR005", "anggota02", hashPassword("Anggota123!"), "Zaid bin Tsabit", "zaid@email.com", "anggota", "AGT002", "aktif", now, now, ""]);
+  usersSheet.appendRow(["USR006", "anggota03", hashPassword("Anggota123!"), "Budi Santoso", "budi@email.com", "anggota", "AGT003", "aktif", now, now, ""]);
+  usersSheet.appendRow(["USR007", "anggota04", hashPassword("Anggota123!"), "Bilal Al-Habasyi", "bilal@email.com", "anggota", "AGT004", "aktif", now, now, ""]);
+  usersSheet.appendRow(["USR008", "anggota05", hashPassword("Anggota123!"), "Abdullah bin Mas'ud", "abdullah@email.com", "anggota", "AGT005", "aktif", now, now, ""]);
+  usersSheet.appendRow(["USR009", "anggota06", hashPassword("Anggota123!"), "Salman Al-Farisi", "salman@email.com", "anggota", "AGT006", "aktif", now, now, ""]);
 
   // Sample Aktivitas (Hari ini, kemarin, dan beberapa hari lalu)
   const today = new Date();
@@ -1397,10 +1415,16 @@ function seedSampleData() {
 // ---------------------------------------------------------------------------------
 
 function getSpreadsheet() {
-  if (SPREADSHEET_ID) {
-    return SpreadsheetApp.openById(SPREADSHEET_ID);
+  if (typeof SPREADSHEET_ID !== "undefined" && SPREADSHEET_ID && SPREADSHEET_ID.trim() !== "") {
+    try {
+      return SpreadsheetApp.openById(SPREADSHEET_ID.trim());
+    } catch (e) {
+      Logger.log("Peringatan: Gagal membuka spreadsheet dengan ID '" + SPREADSHEET_ID + "': " + e.toString());
+    }
   }
-  return SpreadsheetApp.getActiveSpreadsheet();
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  if (active) return active;
+  throw new Error("Spreadsheet ID belum diisi. Masukkan SPREADSHEET_ID pada bagian atas file Code.gs");
 }
 
 function createJsonResponse(success, message, data) {

@@ -124,6 +124,53 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               </button>
             </div>
           </form>
+
+          {/* Akses Cepat Akun Default */}
+          <div className="mt-6 pt-5 border-t border-slate-100">
+            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-2.5 text-center">
+              Pilihan Akun Cepat:
+            </p>
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                id="btn-quick-admin"
+                onClick={() => {
+                  setUsername('admin');
+                  setPassword('Admin123!');
+                }}
+                className="p-2 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-center transition-colors cursor-pointer"
+              >
+                <div className="text-xs font-bold text-slate-800">Admin</div>
+                <div className="text-[10px] text-slate-400 font-mono mt-0.5">Admin123!</div>
+              </button>
+
+              <button
+                type="button"
+                id="btn-quick-naqib"
+                onClick={() => {
+                  setUsername('naqib01');
+                  setPassword('Naqib123!');
+                }}
+                className="p-2 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-center transition-colors cursor-pointer"
+              >
+                <div className="text-xs font-bold text-slate-800">NAQIB</div>
+                <div className="text-[10px] text-slate-400 font-mono mt-0.5">Naqib123!</div>
+              </button>
+
+              <button
+                type="button"
+                id="btn-quick-anggota"
+                onClick={() => {
+                  setUsername('anggota01');
+                  setPassword('Anggota123!');
+                }}
+                className="p-2 rounded-lg border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-center transition-colors cursor-pointer"
+              >
+                <div className="text-xs font-bold text-slate-800">Anggota</div>
+                <div className="text-[10px] text-slate-400 font-mono mt-0.5">Anggota123!</div>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
