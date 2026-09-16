@@ -6,32 +6,22 @@ import { Aktivitas } from '../types/aktivitas';
 import { authService } from './auth';
 import { generateResetPassword } from '../utils/userUtils';
 
-// Penyimpanan URL Google Apps Script kustom di browser (localStorage)
+// URL Web App Google Apps Script permanen dari konfigurasi VITE_API_URL Settings / Secrets AI Studio
+export const PERMANENT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzmzg4_0dsCxwAx9JCpstBW46YXaZNfjdRNSlDl9s737aWT05t51vUJe4iYL0oBV_Kdrg/exec';
+
 const STORAGE_KEY_GAS_URL = 'ngajitrack_gas_api_url';
 
-// URL Web App Google Apps Script permanen yang tertanam di kode aplikasi
-// Pengguna di Vercel / GitHub tidak perlu lagi memasukkan URL Google Apps Script secara manual.
-export const PERMANENT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxbdB05AJ5A4joJ3CxpNvl4dOVXhpLGLdeMUlmin4UW4Iy6rw0DcZZB9vBxrK4l8QlP/exec';
-
-export function getCustomGasUrl(): string {
-  if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem(STORAGE_KEY_GAS_URL);
-    if (saved && saved.trim()) {
-      return saved.trim();
-    }
-  }
-  return '';
-}
-
 export function getEffectiveApiUrl(): string {
-  // Prioritas Utama: VITE_API_URL dari Menu Settings / Secrets AI Studio atau file .env
+  // 1. Prioritas Utama: VITE_API_URL dari Menu Settings / Secrets AI Studio atau file .env
   const envUrl = (import.meta.env.VITE_API_URL || '').trim();
   if (envUrl && !envUrl.includes('YOUR_SCRIPT_ID') && envUrl.startsWith('https://script.google.com')) {
     return envUrl;
   }
-  const custom = getCustomGasUrl();
-  if (custom) return custom;
   return PERMANENT_GAS_URL;
+}
+
+export function getCustomGasUrl(): string {
+  return getEffectiveApiUrl();
 }
 
 export function isLiveApiActive(): boolean {

@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import {defineConfig} from 'vite';
 
-let activeGasUrl = process.env.VITE_API_URL || 'https://script.google.com/macros/s/AKfycbzOKvLNbSilCLi2amqVp-GBwfPpgis_rkfcFkjHh_CzNh5BfTqtttKW2QJmW63Tzk8vKA/exec';
+let activeGasUrl = process.env.VITE_API_URL || 'https://script.google.com/macros/s/AKfycbzmzg4_0dsCxwAx9JCpstBW46YXaZNfjdRNSlDl9s737aWT05t51vUJe4iYL0oBV_Kdrg/exec';
 
 function gasProxyPlugin() {
   return {
@@ -129,8 +129,13 @@ function gasProxyPlugin() {
 }
 
 export default defineConfig(() => {
+  const gasUrl = (process.env.VITE_API_URL || 'https://script.google.com/macros/s/AKfycbzmzg4_0dsCxwAx9JCpstBW46YXaZNfjdRNSlDl9s737aWT05t51vUJe4iYL0oBV_Kdrg/exec').trim();
+
   return {
     plugins: [react(), tailwindcss(), gasProxyPlugin()],
+    define: {
+      'import.meta.env.VITE_API_URL': JSON.stringify(gasUrl),
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
